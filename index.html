@@ -27,6 +27,10 @@
   th,td { text-align:left; padding:6px 10px; border-bottom:1px solid var(--line); white-space:nowrap; }
   th { cursor:pointer; user-select:none; background:var(--card); }
   td.num { text-align:right; font-variant-numeric:tabular-nums; }
+  .search { width:100%; box-sizing:border-box; padding:8px 12px; margin-bottom:8px; font:inherit; color:var(--fg);
+            background:var(--bg); border:1px solid var(--line); border-radius:6px; }
+  .search:focus { outline:2px solid var(--accent); border-color:transparent; }
+  #count { color:var(--muted); font-size:13px; margin-bottom:8px; }
   #status { color:var(--muted); }
   footer { margin-top:32px; color:var(--muted); font-size:12px; }
 </style>
@@ -39,6 +43,8 @@
   <h2>Total budget (EUR) by project</h2>
   <div id="chart"></div>
   <h2>Data</h2>
+  <input id="search" class="search" type="search" placeholder="Search any column, e.g. part of a title…" autocomplete="off">
+  <div id="count"></div>
   <div class="scroll"><table id="table"></table></div>
   <footer>Source: <a id="src" href="#">CSV</a> · static snapshot, no live connection to Databricks.</footer>
 </main>
@@ -69,10 +75,15 @@ function parseCSV(text) {
 const isNum = v => v !== "" && !isNaN(Number(v));
 const fmt = n => n.toLocaleString("en", { maximumFractionDigits: 0 });
 const el = (id) => document.getElementById(id);
-let data = [], cols = [], sortKey = null, asc = true;
+let data = [], cols = [], sortKey = null, asc = true, query = "";
 
 function renderTable() {
-  const rows = [...data];
+  const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
+  const rows = data.filter(r => {
+    const hay = cols.map(c => r[c]).join(" ").toLowerCase();
+    return terms.every(t => hay.includes(t));
+  });
+  el("count").textContent = terms.length ? `${rows.length} of ${data.length} rows match` : `${data.length} rows`;
   if (sortKey) rows.sort((a, b) => {
     const x = a[sortKey], y = b[sortKey];
     const r = isNum(x) && isNum(y) ? x - y : String(x).localeCompare(String(y));
@@ -114,6 +125,8 @@ function renderSummary() {
       `<div class="bar"><span class="label">${k}</span><span class="fill" style="width:${(v / max * 70).toFixed(1)}%"></span><span class="val">${fmt(v)}</span></div>`).join("");
   }
 }
+
+el("search").addEventListener("input", e => { query = e.target.value; renderTable(); });
 
 fetch(CSV_URL, { cache: "no-store" })
   .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })

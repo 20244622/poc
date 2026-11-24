@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lakehouse data PoC</title>
+<style>
+  :root { --bg:#fff; --fg:#1b1f24; --muted:#656d76; --line:#d0d7de; --accent:#0969da; --card:#f6f8fa; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0d1117; --fg:#e6edf3; --muted:#8b949e; --line:#30363d; --accent:#58a6ff; --card:#161b22; }
+  }
+  body { margin:0; background:var(--bg); color:var(--fg); font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif; }
+  main { max-width:960px; margin:0 auto; padding:32px 16px; }
+  h1 { margin:0 0 4px; font-size:24px; }
+  p.sub { margin:0 0 24px; color:var(--muted); }
+  .tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-bottom:24px; }
+  .tile { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px 16px; }
+  .tile b { display:block; font-size:22px; }
+  .tile span { color:var(--muted); font-size:13px; }
+  h2 { font-size:16px; margin:24px 0 8px; }
+  .bar { display:flex; align-items:center; gap:8px; margin:4px 0; }
+  .bar .label { width:90px; color:var(--muted); font-size:13px; }
+  .bar .fill { height:18px; background:var(--accent); border-radius:3px; }
+  .bar .val { font-size:13px; }
+  .scroll { overflow-x:auto; }
+  table { border-collapse:collapse; width:100%; }
+  th,td { text-align:left; padding:6px 10px; border-bottom:1px solid var(--line); white-space:nowrap; }
+  th { cursor:pointer; user-select:none; background:var(--card); }
+  td.num { text-align:right; font-variant-numeric:tabular-nums; }
+  #status { color:var(--muted); }
+  footer { margin-top:32px; color:var(--muted); font-size:12px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Lakehouse data PoC</h1>
+  <p class="sub">Synthetic data pushed one-way from Databricks. <span id="status">Loading…</span></p>
+  <div class="tiles" id="tiles"></div>
+  <h2>Total budget (EUR) by project</h2>
+  <div id="chart"></div>
+  <h2>Data</h2>
+  <div class="scroll"><table id="table"></table></div>
+  <footer>Source: <a id="src" href="#">CSV</a> · static snapshot, no live connection to Databricks.</footer>
+</main>
+<script>
+// Change this to publish a different file from the data/ folder.
+const CSV_URL = "data/github_publish_poc.csv";
+
+function parseCSV(text) {
+  const rows = []; let row = [], cur = "", q = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (q) {
+      if (c === '"' && text[i+1] === '"') { cur += '"'; i++; }
+      else if (c === '"') q = false;
+      else cur += c;
+    } else if (c === '"') q = true;
+    else if (c === ",") { row.push(cur); cur = ""; }
+    else if (c === "\n" || c === "\r") {
+      if (c === "\r" && text[i+1] === "\n") i++;
+      row.push(cur); cur = ""; rows.push(row); row = [];
+    } else cur += c;
+  }
+  if (cur !== "" || row.length) { row.push(cur); rows.push(row); }
+  const [head, ...body] = rows.filter(r => r.length > 1 || r[0] !== "");
+  return body.map(r => Object.fromEntries(head.map((h, i) => [h, r[i]])));
+}
+
+const isNum = v => v !== "" && !isNaN(Number(v));
+const fmt = n => n.toLocaleString("en", { maximumFractionDigits: 0 });
+const el = (id) => document.getElementById(id);
+let data = [], cols = [], sortKey = null, asc = true;
+
+function renderTable() {
+  const rows = [...data];
+  if (sortKey) rows.sort((a, b) => {
+    const x = a[sortKey], y = b[sortKey];
+    const r = isNum(x) && isNum(y) ? x - y : String(x).localeCompare(String(y));
+    return asc ? r : -r;
+  });
+  const t = el("table");
+  t.innerHTML = "";
+  const thead = t.createTHead().insertRow();
+  cols.forEach(c => {
+    const th = document.createElement("th");
+    th.textContent = c + (sortKey === c ? (asc ? " ▲" : " ▼") : "");
+    th.onclick = () => { asc = sortKey === c ? !asc : true; sortKey = c; renderTable(); };
+    thead.appendChild(th);
+  });
+  const tb = t.createTBody();
+  rows.forEach(r => {
+    const tr = tb.insertRow();
+    cols.forEach(c => {
+      const td = tr.insertCell(); td.textContent = r[c];
+      if (isNum(r[c])) td.className = "num";
+    });
+  });
+}
+
+function renderSummary() {
+  const numCol = cols.find(c => data.every(r => isNum(r[c])) && c !== "id");
+  const catCol = cols.find(c => !data.every(r => isNum(r[c])) && new Set(data.map(r => r[c])).size <= 8);
+  const total = numCol ? data.reduce((s, r) => s + Number(r[numCol]), 0) : null;
+  const tiles = [["Rows", data.length]];
+  if (numCol) tiles.push(["Total " + numCol, fmt(total)]);
+  if (catCol) tiles.push(["Distinct " + catCol, new Set(data.map(r => r[catCol])).size]);
+  el("tiles").innerHTML = tiles.map(([k, v]) => `<div class="tile"><b>${v}</b><span>${k}</span></div>`).join("");
+
+  if (numCol && catCol) {
+    const sums = {};
+    data.forEach(r => sums[r[catCol]] = (sums[r[catCol]] || 0) + Number(r[numCol]));
+    const max = Math.max(...Object.values(sums));
+    el("chart").innerHTML = Object.entries(sums).sort((a, b) => b[1] - a[1]).map(([k, v]) =>
+      `<div class="bar"><span class="label">${k}</span><span class="fill" style="width:${(v / max * 70).toFixed(1)}%"></span><span class="val">${fmt(v)}</span></div>`).join("");
+  }
+}
+
+fetch(CSV_URL, { cache: "no-store" })
+  .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
+  .then(text => {
+    data = parseCSV(text); cols = Object.keys(data[0] || {});
+    el("status").textContent = data.length + " rows.";
+    el("src").href = CSV_URL;
+    renderSummary(); renderTable();
+  })
+  .catch(e => { el("status").textContent = "Could not load data (" + e.message + ")."; });
+</script>
+</body>
+</html>

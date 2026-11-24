@@ -1,11 +1,11 @@
-id,project,title,status,budget_eur,created_date
-1,ERB,Example project A,Open,37335.97,2026-05-06
-2,ERB,Example project B,In review,37087.09,2026-10-07
-3,ERB,Example project C,Closed,2557.35,2026-02-17
-4,ERB,Example project D,In review,25762.41,2026-01-14
-5,ERB,Example project E,Closed,11801.59,2026-05-23
-6,ERB,Example project F,In review,35208.83,2026-06-24
-7,DMP,Example project G,In review,11550.37,2026-06-22
-8,ERB,Example project H,Open,19616.44,2026-07-03
-9,DMP,Example project I,Approved,40549.29,2026-08-24
-10,ERB,Example project J,Closed,4861.21,2026-05-31
+id,project,issue_id,title,status,budget_eur,created_date
+1,ERB,ERB-13,Example project A,Approved,12999.7,2026-03-13
+2,ERB,ERB-347,Example project B,Open,29934.13,2026-01-17
+3,ERB,ERB-48,Example project C,In review,12400.38,2026-01-14
+4,ERB,ERB-367,Example project D,Closed,11801.59,2026-05-23
+5,ERB,ERB-389,Example project E,In review,35208.83,2026-06-24
+6,DMP,DMP-80,Example project F,In review,47903.44,2026-06-22
+7,ERB,ERB-48,Example project G,Closed,5739.1,2026-06-26
+8,DMP,DMP-23,Example project H,Closed,27275.18,2026-07-13
+9,ERB,ERB-283,Example project I,Approved,41640.83,2026-07-05
+10,ERB,ERB-361,Example project J,Open,3245.39,2026-04-27

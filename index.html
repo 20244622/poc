@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Lakehouse data PoC</title>
+<title>ERB &amp; DMP overview</title>
 <style>
   :root { --bg:#fff; --fg:#1b1f24; --muted:#656d76; --line:#d0d7de; --accent:#0969da; --card:#f6f8fa; }
   @media (prefers-color-scheme: dark) {
@@ -11,46 +11,82 @@
   }
   body { margin:0; background:var(--bg); color:var(--fg); font:15px/1.5 system-ui,-apple-system,Segoe UI,sans-serif; }
   main { max-width:960px; margin:0 auto; padding:32px 16px; }
-  h1 { margin:0 0 4px; font-size:24px; }
-  p.sub { margin:0 0 24px; color:var(--muted); }
-  .tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-bottom:24px; }
+  h1 { margin:0 0 16px; font-size:24px; }
+  h2 { font-size:16px; margin:28px 0 8px; }
+  .tabs { display:flex; gap:4px; border-bottom:1px solid var(--line); margin-bottom:20px; }
+  .tab { padding:8px 16px; border:1px solid transparent; border-bottom:none; border-radius:6px 6px 0 0; background:none;
+         color:var(--muted); font:inherit; cursor:pointer; }
+  .tab[aria-selected="true"] { color:var(--fg); border-color:var(--line); background:var(--card); font-weight:600; margin-bottom:-1px; }
+  .tab:focus-visible { outline:2px solid var(--accent); }
+  .desc { max-width:75ch; margin:0 0 8px; }
+  .tiles { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:12px; margin-bottom:16px; }
   .tile { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px 16px; }
   .tile b { display:block; font-size:22px; }
   .tile span { color:var(--muted); font-size:13px; }
-  h2 { font-size:16px; margin:24px 0 8px; }
   .bar { display:flex; align-items:center; gap:8px; margin:4px 0; }
-  .bar .label { width:90px; color:var(--muted); font-size:13px; }
-  .bar .fill { height:18px; background:var(--accent); border-radius:3px; }
-  .bar .val { font-size:13px; }
-  .scroll { overflow-x:auto; }
-  table { border-collapse:collapse; width:100%; }
-  th,td { text-align:left; padding:6px 10px; border-bottom:1px solid var(--line); white-space:nowrap; }
-  th { cursor:pointer; user-select:none; background:var(--card); }
-  td.num { text-align:right; font-variant-numeric:tabular-nums; }
+  .bar .label { width:min(280px,45%); color:var(--muted); font-size:13px; flex:none; }
+  .bar .track { flex:1; }
+  .bar .fill { display:block; height:16px; background:var(--accent); border-radius:3px; min-width:2px; }
+  .bar .val { font-size:13px; width:32px; text-align:right; flex:none; }
   .search { width:100%; box-sizing:border-box; padding:8px 12px; margin-bottom:8px; font:inherit; color:var(--fg);
             background:var(--bg); border:1px solid var(--line); border-radius:6px; }
   .search:focus { outline:2px solid var(--accent); border-color:transparent; }
-  #count { color:var(--muted); font-size:13px; margin-bottom:8px; }
-  #status { color:var(--muted); }
+  .note { color:var(--muted); font-size:13px; margin:0 0 8px; }
+  .scroll { overflow:auto; border:1px solid var(--line); border-radius:6px; }
+  /* row height is fixed so max-height shows exactly N rows (+ sticky header) */
+  .scroll.rows10 { max-height:calc(37px * 11); }
+  .scroll.rows20 { max-height:calc(37px * 21); }
+  table { border-collapse:separate; border-spacing:0; width:100%; }
+  th,td { text-align:left; padding:0 10px; height:36px; box-sizing:border-box; border-bottom:1px solid var(--line);
+          white-space:nowrap; line-height:36px; }
+  td.title { max-width:380px; overflow:hidden; text-overflow:ellipsis; }
+  th { position:sticky; top:0; background:var(--card); z-index:1; }
   footer { margin-top:32px; color:var(--muted); font-size:12px; }
+  #status { color:var(--muted); font-size:13px; }
 </style>
 </head>
 <body>
 <main>
-  <h1>Lakehouse data PoC</h1>
-  <p class="sub">Synthetic data pushed one-way from Databricks. <span id="status">Loading…</span></p>
+  <h1>ERB &amp; DMP overview</h1>
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="tab-erb" data-ds="erb" aria-selected="true">ERB data</button>
+    <button class="tab" role="tab" id="tab-dmp" data-ds="dmp" aria-selected="false">DMP data</button>
+  </div>
+
+  <p class="desc" id="desc"></p>
+  <p id="status">Loading…</p>
+
+  <h2>Overview</h2>
   <div class="tiles" id="tiles"></div>
-  <h2>Total budget (EUR) by project</h2>
   <div id="chart"></div>
-  <h2>Data</h2>
-  <input id="search" class="search" type="search" placeholder="Search any column, e.g. part of a title…" autocomplete="off">
-  <div id="count"></div>
-  <div class="scroll"><table id="table"></table></div>
-  <footer>Source: <a id="src" href="#">CSV</a> · static snapshot, no live connection to Databricks.</footer>
+
+  <h2>Search</h2>
+  <input id="search" class="search" type="search" placeholder="Search any column, e.g. a key, a word from the title, a department…" autocomplete="off">
+  <p class="note" id="count"></p>
+  <div class="scroll rows10" id="results-wrap" hidden><table id="results"></table></div>
+
+  <h2>All records</h2>
+  <div class="scroll rows20"><table id="table"></table></div>
+
+  <footer>Static snapshot pushed one-way from Databricks. Data shown on this page is synthetic.</footer>
 </main>
 <script>
-// Change this to publish a different file from the data/ folder.
-const CSV_URL = "data/github_publish_poc.csv";
+const DATASETS = {
+  erb: {
+    csv: "data/erb.csv", label: "ERB", link: "related_dmp",
+    desc: "The Ethics Review Board (ERB) reviews research studies that involve human participants, to make sure " +
+          "they are carried out in an ethically responsible way. Researchers submit their study as a request in Jira. " +
+          "A daily automated process collects these requests from Jira, cleans them up and prepares them for " +
+          "reporting, so this page always reflects the situation of the previous day."
+  },
+  dmp: {
+    csv: "data/dmp.csv", label: "DMP", link: "related_erb",
+    desc: "A Data Management Plan (DMP) describes how a research project will handle its data: where it is " +
+          "stored, how it is shared and how it is kept for the future. Researchers submit their plan as a request " +
+          "in Jira. A daily automated process collects these requests from Jira, cleans them up and prepares them " +
+          "for reporting, so this page always reflects the situation of the previous day."
+  }
+};
 
 function parseCSV(text) {
   const rows = []; let row = [], cur = "", q = false;
@@ -72,71 +108,68 @@ function parseCSV(text) {
   return body.map(r => Object.fromEntries(head.map((h, i) => [h, r[i]])));
 }
 
-const isNum = v => v !== "" && !isNaN(Number(v));
-const fmt = n => n.toLocaleString("en", { maximumFractionDigits: 0 });
-const el = (id) => document.getElementById(id);
-let data = [], cols = [], sortKey = null, asc = true, query = "";
+const el = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+const state = { ds: "erb", data: {}, query: "" };
 
-function renderTable() {
-  const terms = query.toLowerCase().split(/\s+/).filter(Boolean);
-  const rows = data.filter(r => {
-    const hay = cols.map(c => r[c]).join(" ").toLowerCase();
-    return terms.every(t => hay.includes(t));
-  });
-  el("count").textContent = terms.length ? `${rows.length} of ${data.length} rows match` : `${data.length} rows`;
-  if (sortKey) rows.sort((a, b) => {
-    const x = a[sortKey], y = b[sortKey];
-    const r = isNum(x) && isNum(y) ? x - y : String(x).localeCompare(String(y));
-    return asc ? r : -r;
-  });
-  const t = el("table");
-  t.innerHTML = "";
-  const thead = t.createTHead().insertRow();
-  cols.forEach(c => {
-    const th = document.createElement("th");
-    th.textContent = c + (sortKey === c ? (asc ? " ▲" : " ▼") : "");
-    th.onclick = () => { asc = sortKey === c ? !asc : true; sortKey = c; renderTable(); };
-    thead.appendChild(th);
-  });
-  const tb = t.createTBody();
-  rows.forEach(r => {
-    const tr = tb.insertRow();
-    cols.forEach(c => {
-      const td = tr.insertCell(); td.textContent = r[c];
-      if (isNum(r[c])) td.className = "num";
-    });
-  });
+function renderInto(table, rows, cols) {
+  table.innerHTML = "<thead><tr>" + cols.map(c => `<th>${esc(c)}</th>`).join("") + "</tr></thead><tbody>" +
+    rows.map(r => "<tr>" + cols.map(c => `<td${c === "issue_title" ? ' class="title" title="' + esc(r[c]) + '"' : ""}>${esc(r[c])}</td>`).join("") + "</tr>").join("") +
+    "</tbody>";
 }
 
-function renderSummary() {
-  const numCol = cols.find(c => data.every(r => isNum(r[c])) && c !== "id");
-  const catCol = cols.find(c => !data.every(r => isNum(r[c])) && new Set(data.map(r => r[c])).size <= 8);
-  const total = numCol ? data.reduce((s, r) => s + Number(r[numCol]), 0) : null;
-  const tiles = [["Rows", data.length]];
-  if (numCol) tiles.push(["Total " + numCol, fmt(total)]);
-  if (catCol) tiles.push(["Distinct " + catCol, new Set(data.map(r => r[catCol])).size]);
+function renderOverview(rows) {
+  const approved = rows.filter(r => r.is_approved === "True").length;
+  const linked = rows.filter(r => r[DATASETS[state.ds].link]).length;
+  const tiles = [
+    ["Total " + DATASETS[state.ds].label + " issues", rows.length],
+    ["Approved", approved],
+    ["Approval rate", rows.length ? Math.round(approved / rows.length * 100) + "%" : "–"],
+    [state.ds === "erb" ? "Linked to a DMP" : "Linked to an ERB", linked],
+  ];
   el("tiles").innerHTML = tiles.map(([k, v]) => `<div class="tile"><b>${v}</b><span>${k}</span></div>`).join("");
-
-  if (numCol && catCol) {
-    const sums = {};
-    data.forEach(r => sums[r[catCol]] = (sums[r[catCol]] || 0) + Number(r[numCol]));
-    const max = Math.max(...Object.values(sums));
-    el("chart").innerHTML = Object.entries(sums).sort((a, b) => b[1] - a[1]).map(([k, v]) =>
-      `<div class="bar"><span class="label">${k}</span><span class="fill" style="width:${(v / max * 70).toFixed(1)}%"></span><span class="val">${fmt(v)}</span></div>`).join("");
-  }
+  const counts = {};
+  rows.forEach(r => counts[r.department] = (counts[r.department] || 0) + 1);
+  const max = Math.max(1, ...Object.values(counts));
+  el("chart").innerHTML = "<p class='note'>Issues per department</p>" +
+    Object.entries(counts).sort((a, b) => b[1] - a[1]).map(([k, v]) =>
+      `<div class="bar"><span class="label">${esc(k)}</span><span class="track"><span class="fill" style="width:${(v / max * 100).toFixed(1)}%"></span></span><span class="val">${v}</span></div>`).join("");
 }
 
-el("search").addEventListener("input", e => { query = e.target.value; renderTable(); });
+function renderSearch(rows, cols) {
+  const terms = state.query.toLowerCase().split(/\s+/).filter(Boolean);
+  const wrap = el("results-wrap");
+  if (!terms.length) { wrap.hidden = true; el("count").textContent = "Type to search; matching rows appear here."; return; }
+  const hits = rows.filter(r => { const hay = cols.map(c => r[c]).join(" ").toLowerCase(); return terms.every(t => hay.includes(t)); });
+  el("count").textContent = hits.length + (hits.length === 1 ? " row matches" : " rows match") +
+    (hits.length > 10 ? " (scroll to see all)" : "");
+  wrap.hidden = hits.length === 0;
+  renderInto(el("results"), hits, cols);
+}
 
-fetch(CSV_URL, { cache: "no-store" })
-  .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.text(); })
-  .then(text => {
-    data = parseCSV(text); cols = Object.keys(data[0] || {});
-    el("status").textContent = data.length + " rows.";
-    el("src").href = CSV_URL;
-    renderSummary(); renderTable();
-  })
-  .catch(e => { el("status").textContent = "Could not load data (" + e.message + ")."; });
+function render() {
+  const d = state.data[state.ds];
+  el("desc").textContent = DATASETS[state.ds].desc;
+  if (!d) return;
+  renderOverview(d.rows); renderSearch(d.rows, d.cols); renderInto(el("table"), d.rows, d.cols);
+}
+
+function select(ds) {
+  state.ds = ds; state.query = ""; el("search").value = "";
+  document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", String(t.dataset.ds === ds)));
+  render();
+}
+
+document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => select(t.dataset.ds)));
+el("search").addEventListener("input", e => { state.query = e.target.value; const d = state.data[state.ds]; if (d) renderSearch(d.rows, d.cols); });
+
+Promise.all(Object.entries(DATASETS).map(([k, v]) =>
+  fetch(v.csv, { cache: "no-store" }).then(r => { if (!r.ok) throw new Error(v.csv + " HTTP " + r.status); return r.text(); })
+    .then(t => { const rows = parseCSV(t); state.data[k] = { rows, cols: Object.keys(rows[0] || {}) }; })
+)).then(() => { el("status").textContent = ""; })
+  .catch(e => { el("status").textContent = "Could not load data (" + e.message + ")."; })
+  .finally(render);
+render();
 </script>
 </body>
 </html>

@@ -31,6 +31,11 @@
   .search { width:100%; box-sizing:border-box; padding:8px 12px; margin-bottom:8px; font:inherit; color:var(--fg);
             background:var(--bg); border:1px solid var(--line); border-radius:6px; }
   .search:focus { outline:2px solid var(--accent); border-color:transparent; }
+  .searches { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin-bottom:8px; }
+  .sbox { background:var(--card); border:1px solid var(--line); border-radius:8px; padding:12px 16px; }
+  .sbox h3 { margin:0 0 4px; font-size:14px; }
+  .sbox p { margin:0 0 8px; color:var(--muted); font-size:13px; }
+  .sbox .search { margin-bottom:0; }
   .note { color:var(--muted); font-size:13px; margin:0 0 8px; }
   .scroll { overflow:auto; border:1px solid var(--line); border-radius:6px; }
   /* row height is fixed so max-height shows exactly N rows (+ sticky header) */
@@ -61,7 +66,25 @@
   <div id="chart"></div>
 
   <h2>Search</h2>
-  <input id="search" class="search" type="search" placeholder="Search any column, e.g. a key, a word from the title, a department…" autocomplete="off">
+  <p class="note">Use <b>one</b> of the three search bars below. They work independently: when you type in one,
+    the other two are cleared, so results always come from a single search.</p>
+  <div class="searches">
+    <div class="sbox">
+      <h3><label for="s-title">Search by issue title</label></h3>
+      <p>Finds issues whose title contains the words you type (e.g. <i>river lantern</i>). Only the title is searched.</p>
+      <input id="s-title" data-field="title" class="search" type="search" placeholder="Words from the title" autocomplete="off">
+    </div>
+    <div class="sbox">
+      <h3><label for="s-key">Search by issue key</label></h3>
+      <p>Enter only the number of the issue, without the prefix (e.g. <i>12</i> finds <span id="key-example"></span>).</p>
+      <input id="s-key" data-field="key" class="search" type="search" inputmode="numeric" pattern="[0-9]*" placeholder="Issue number, e.g. 12" autocomplete="off">
+    </div>
+    <div class="sbox">
+      <h3><label for="s-dept">Search by department</label></h3>
+      <p>Finds issues of a department. Type (part of) the department name. Only the department is searched.</p>
+      <input id="s-dept" data-field="dept" class="search" type="search" placeholder="Department name" autocomplete="off">
+    </div>
+  </div>
   <p class="note" id="count"></p>
   <div class="scroll rows10" id="results-wrap" hidden><table id="results"></table></div>
 
@@ -110,7 +133,7 @@ function parseCSV(text) {
 
 const el = id => document.getElementById(id);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
-const state = { ds: "erb", data: {}, query: "" };
+const state = { ds: "erb", data: {}, query: "", field: "title" };
 
 function renderInto(table, rows, cols) {
   table.innerHTML = "<thead><tr>" + cols.map(c => `<th>${esc(c)}</th>`).join("") + "</tr></thead><tbody>" +
@@ -136,11 +159,22 @@ function renderOverview(rows) {
       `<div class="bar"><span class="label">${esc(k)}</span><span class="track"><span class="fill" style="width:${(v / max * 100).toFixed(1)}%"></span></span><span class="val">${v}</span></div>`).join("");
 }
 
+function matcher(field, q) {
+  q = q.trim().toLowerCase();
+  if (field === "title") { const t = q.split(/\s+/); return r => { const h = (r.issue_title || "").toLowerCase(); return t.every(w => h.includes(w)); }; }
+  if (field === "key") { return r => /^\d+$/.test(q) && String((r.issue_key || "").split("-").pop()).replace(/^0+(?=\d)/, "") === q.replace(/^0+(?=\d)/, ""); }
+  return r => (r.department || "").toLowerCase().includes(q);
+}
+
 function renderSearch(rows, cols) {
-  const terms = state.query.toLowerCase().split(/\s+/).filter(Boolean);
   const wrap = el("results-wrap");
-  if (!terms.length) { wrap.hidden = true; el("count").textContent = "Type to search; matching rows appear here."; return; }
-  const hits = rows.filter(r => { const hay = cols.map(c => r[c]).join(" ").toLowerCase(); return terms.every(t => hay.includes(t)); });
+  el("key-example").textContent = DATASETS[state.ds].label + "-12";
+  const q = (state.query || "").trim();
+  if (!q) { wrap.hidden = true; el("count").textContent = "Type in one of the search bars; matching rows appear here."; return; }
+  if (state.field === "key" && !/^\d+$/.test(q)) {
+    wrap.hidden = true; el("count").textContent = "Please enter only digits for the issue key, e.g. 12."; return;
+  }
+  const hits = rows.filter(matcher(state.field, q));
   el("count").textContent = hits.length + (hits.length === 1 ? " row matches" : " rows match") +
     (hits.length > 10 ? " (scroll to see all)" : "");
   wrap.hidden = hits.length === 0;
@@ -155,13 +189,18 @@ function render() {
 }
 
 function select(ds) {
-  state.ds = ds; state.query = ""; el("search").value = "";
+  state.ds = ds; state.query = ""; clearSearches();
   document.querySelectorAll(".tab").forEach(t => t.setAttribute("aria-selected", String(t.dataset.ds === ds)));
   render();
 }
 
 document.querySelectorAll(".tab").forEach(t => t.addEventListener("click", () => select(t.dataset.ds)));
-el("search").addEventListener("input", e => { state.query = e.target.value; const d = state.data[state.ds]; if (d) renderSearch(d.rows, d.cols); });
+function clearSearches(except) { document.querySelectorAll(".search").forEach(i => { if (i !== except) i.value = ""; }); }
+document.querySelectorAll(".search").forEach(i => i.addEventListener("input", e => {
+  clearSearches(e.target);               // only one search bar is active at a time
+  state.field = e.target.dataset.field; state.query = e.target.value;
+  const d = state.data[state.ds]; if (d) renderSearch(d.rows, d.cols);
+}));
 
 Promise.all(Object.entries(DATASETS).map(([k, v]) =>
   fetch(v.csv, { cache: "no-store" }).then(r => { if (!r.ok) throw new Error(v.csv + " HTTP " + r.status); return r.text(); })

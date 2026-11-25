@@ -1,0 +1,101 @@
+issue_key,issue_title,issue_creation_time,is_approved,department,related_erb
+DMP-1,timber opal velvet monsoon cinder horizon velvet anchor willow summit falcon ripple lagoon,2024-07-14 06:41:55,False,Applied Physics and Science Education,ERB-29
+DMP-2,amber willow oasis canvas umbra harvest jasmine kernel mosaic island canvas nectar pebble koala island,2024-08-19 19:24:50,False,Mathematics and Computer Science,
+DMP-3,thunder marble anchor mosaic koala koala summit monsoon harvest timber opal echo mirror mirror,2025-03-16 16:17:59,False,Built Environment,ERB-26
+DMP-4,monsoon meadow cinder cinder orbit lagoon prism canvas island jasmine garden prism amber thunder whisper,2025-06-05 17:09:08,False,Mechanical Engineering,ERB-9
+DMP-5,kernel mirror meadow lantern prism ripple river zenith meadow meadow lantern compass nectar ember,2025-01-12 00:46:55,True,Biomedical Engineering,ERB-47
+DMP-6,lotus quartz lagoon dune echo pebble harvest jasmine jasmine lagoon amber willow opal harvest falcon,2024-09-20 13:03:32,False,Built Environment,ERB-14
+DMP-7,pebble oasis velvet pebble lagoon island meadow fjord horizon harvest umbra,2025-02-23 21:17:22,False,Built Environment,ERB-67
+DMP-8,anchor monsoon garden falcon meadow marble opal canvas dune kernel harbor,2025-07-21 09:36:21,False,Mathematics and Computer Science,ERB-17
+DMP-9,amber anchor glacier nimbus ripple prism breeze copper ripple nectar horizon anchor mosaic signal pebble,2025-04-07 04:15:30,True,Chemical Engineering and Chemistry,
+DMP-10,orbit juniper mirror ripple tundra harbor ripple oasis lotus thunder amber mirror falcon,2025-06-05 17:12:47,False,Mechanical Engineering,
+DMP-11,lotus lotus river tundra quartz harvest oasis nectar orbit timber meadow mirror,2024-08-09 08:33:00,True,Mathematics and Computer Science,
+DMP-12,glacier opal echo oasis vertex prism lotus harvest island canvas juniper breeze anchor ember thunder,2024-09-23 07:45:06,True,Electrical Engineering,ERB-36
+DMP-13,monsoon koala grove signal jasmine ember river dune umbra canvas breeze prism jasmine river,2024-02-28 10:38:49,False,Biomedical Engineering,
+DMP-14,lantern marble prism jasmine copper timber lotus nimbus copper timber willow vertex timber quartz,2025-11-10 09:49:37,True,Other,ERB-95
+DMP-15,anchor lotus horizon nimbus fjord island lantern breeze compass lotus echo horizon fjord canvas dune,2024-03-24 23:02:54,True,Applied Physics and Science Education,ERB-91
+DMP-16,garden fjord kernel glacier echo garden lantern thunder compass horizon nimbus ember umbra,2024-11-06 10:32:42,False,Mathematics and Computer Science,
+DMP-17,lotus harvest nimbus pebble nimbus canvas harvest jasmine amber whisper summit nectar,2024-10-26 04:33:47,False,Chemical Engineering and Chemistry,ERB-70
+DMP-18,copper jasmine oasis echo willow lotus breeze thunder jasmine mosaic koala tundra,2025-05-30 06:26:19,False,Electrical Engineering,ERB-11
+DMP-19,whisper harbor falcon glacier orbit harbor lotus willow juniper tundra glacier prism river ember,2024-11-29 21:41:45,False,Other,ERB-64
+DMP-20,whisper jasmine willow nectar echo mosaic breeze vertex ember vertex tundra signal mosaic mirror whisper,2025-09-18 11:25:19,True,Applied Physics and Science Education,ERB-41
+DMP-21,mirror lagoon horizon meadow harbor tundra thunder zenith monsoon mirror,2025-05-24 13:48:27,False,Built Environment,ERB-42
+DMP-22,garden echo zenith lagoon prism koala orbit orbit lagoon oasis quartz whisper cinder,2024-12-09 18:09:59,False,Mathematics and Computer Science,
+DMP-23,grove prism juniper breeze lagoon canvas mirror umbra cinder oasis tundra ember signal,2024-08-09 22:21:31,True,Industrial Design,ERB-57
+DMP-24,juniper signal velvet marble velvet garden harbor compass lagoon meadow grove falcon,2025-08-20 22:01:59,True,Applied Physics and Science Education,ERB-28
+DMP-25,marble river timber cinder horizon mosaic harbor breeze prism summit garden garden jasmine lantern,2024-09-18 01:54:31,False,Industrial Engineering and Innovation Sciences,ERB-88
+DMP-26,anchor lagoon orbit tundra lantern falcon quartz lantern umbra velvet lagoon copper marble garden whisper,2025-08-14 06:21:00,False,Electrical Engineering,ERB-69
+DMP-27,canvas signal lantern prism opal timber umbra dune umbra cinder mosaic thunder lantern,2024-04-28 08:36:46,True,Mechanical Engineering,
+DMP-28,harvest mosaic lagoon canvas marble summit nimbus amber dune anchor whisper ripple lotus quartz koala,2024-10-18 12:13:43,True,Chemical Engineering and Chemistry,ERB-46
+DMP-29,ripple grove mirror zenith glacier willow echo echo quartz copper,2025-02-17 19:05:28,True,Industrial Design,ERB-38
+DMP-30,nectar compass horizon fjord harvest mosaic umbra grove zenith jasmine,2025-07-23 22:56:09,True,Electrical Engineering,ERB-27
+DMP-31,fjord oasis monsoon jasmine breeze canvas horizon grove signal island mirror lagoon summit marble,2024-01-23 07:00:24,True,Industrial Design,
+DMP-32,monsoon timber canvas ember summit island prism nectar pebble mirror harbor,2025-03-07 05:14:04,False,Mechanical Engineering,ERB-30
+DMP-33,amber kernel river glacier harbor mirror vertex marble prism compass opal prism timber kernel glacier,2024-06-28 01:32:26,True,Chemical Engineering and Chemistry,
+DMP-34,orbit oasis cinder pebble garden monsoon amber nimbus oasis ember harvest thunder,2024-06-25 16:35:36,True,Electrical Engineering,
+DMP-35,zenith orbit copper copper glacier mosaic umbra cinder harvest river,2024-08-08 20:28:09,True,Mechanical Engineering,ERB-80
+DMP-36,pebble copper lotus lagoon fjord falcon meadow tundra copper velvet quartz glacier,2024-07-11 18:36:53,True,Industrial Engineering and Innovation Sciences,ERB-85
+DMP-37,ripple tundra dune marble koala glacier ripple jasmine quartz meadow mosaic harvest cinder tundra,2024-07-24 13:21:40,False,Biomedical Engineering,ERB-43
+DMP-38,pebble meadow river kernel ripple glacier mirror zenith zenith kernel willow,2024-07-24 11:39:20,False,Other,
+DMP-39,echo thunder harvest garden velvet canvas velvet meadow echo ripple fjord koala jasmine lagoon glacier,2024-11-08 15:18:09,False,Mathematics and Computer Science,ERB-62
+DMP-40,monsoon signal copper jasmine whisper canvas signal nimbus grove quartz mosaic opal vertex ember,2024-02-01 05:58:21,False,Biomedical Engineering,ERB-94
+DMP-41,nectar jasmine ember opal jasmine fjord nimbus lagoon harbor whisper harvest anchor harbor,2025-01-19 20:12:43,True,Industrial Engineering and Innovation Sciences,ERB-73
+DMP-42,lantern signal canvas orbit dune horizon fjord river island lagoon copper nectar tundra monsoon,2024-12-09 08:14:26,False,Chemical Engineering and Chemistry,
+DMP-43,prism lotus jasmine zenith orbit nimbus summit mirror anchor prism prism signal,2025-10-15 12:56:19,False,Mechanical Engineering,
+DMP-44,umbra anchor lotus glacier zenith harbor monsoon lagoon kernel velvet,2024-05-28 01:14:05,False,Mathematics and Computer Science,ERB-92
+DMP-45,island horizon ember echo harbor lotus nectar fjord ember glacier ripple opal monsoon velvet prism,2024-09-25 01:34:35,True,Mathematics and Computer Science,
+DMP-46,kernel whisper pebble zenith quartz mirror dune copper breeze zenith fjord falcon vertex,2025-09-29 11:50:35,False,Biomedical Engineering,
+DMP-47,nimbus orbit nimbus compass harvest grove harvest koala river velvet island nimbus meadow,2025-08-30 00:41:14,False,Industrial Design,ERB-55
+DMP-48,zenith umbra horizon horizon horizon marble whisper amber cinder island lantern meadow tundra koala,2024-06-25 16:39:05,False,Industrial Engineering and Innovation Sciences,
+DMP-49,cinder zenith harvest anchor glacier lantern whisper copper timber jasmine,2024-07-08 16:10:12,True,Other,
+DMP-50,echo anchor signal island tundra mirror koala velvet kernel canvas canvas river echo juniper willow,2024-05-02 16:52:44,True,Industrial Design,
+DMP-51,glacier nimbus willow kernel glacier opal horizon harvest marble timber glacier zenith lantern grove,2024-11-03 10:21:13,True,Other,
+DMP-52,dune nimbus koala breeze grove juniper dune garden echo garden pebble canvas cinder cinder willow,2024-04-16 05:44:59,False,Applied Physics and Science Education,ERB-76
+DMP-53,echo lantern timber orbit koala whisper harbor thunder dune island marble nectar,2024-07-30 16:16:40,False,Electrical Engineering,
+DMP-54,nimbus glacier island echo lagoon meadow cinder garden willow willow falcon grove prism,2024-03-11 03:22:03,False,Applied Physics and Science Education,ERB-96
+DMP-55,oasis kernel vertex vertex ripple fjord lotus harvest mirror lantern island quartz,2025-04-18 20:45:23,True,Built Environment,ERB-82
+DMP-56,fjord koala glacier harbor velvet mosaic glacier monsoon harvest juniper velvet kernel vertex breeze mosaic,2024-11-21 13:05:20,True,Biomedical Engineering,
+DMP-57,vertex grove tundra lotus ember willow garden kernel mirror timber opal marble juniper,2025-05-15 20:26:34,True,Industrial Engineering and Innovation Sciences,
+DMP-58,pebble orbit horizon kernel vertex umbra summit lantern dune mirror orbit quartz,2024-02-23 06:59:09,False,Mathematics and Computer Science,ERB-90
+DMP-59,ripple fjord mirror dune echo ripple ember opal opal prism echo,2024-03-26 09:10:32,False,Applied Physics and Science Education,ERB-75
+DMP-60,river echo mirror whisper pebble copper breeze oasis breeze lagoon dune,2025-02-02 15:26:56,True,Mechanical Engineering,
+DMP-61,garden summit amber koala vertex glacier umbra lantern opal horizon jasmine harvest amber kernel,2025-11-29 11:32:51,True,Other,ERB-98
+DMP-62,meadow ember tundra prism whisper opal oasis kernel summit harvest zenith,2025-10-24 09:12:31,False,Mathematics and Computer Science,ERB-16
+DMP-63,island jasmine juniper harbor grove falcon amber whisper whisper canvas mosaic willow lagoon signal signal,2024-12-01 10:45:42,True,Industrial Design,ERB-37
+DMP-64,prism ripple quartz compass orbit timber vertex cinder island amber nimbus,2025-04-11 08:27:19,True,Built Environment,
+DMP-65,nectar anchor monsoon horizon timber prism harvest ember garden jasmine quartz cinder tundra willow,2025-03-08 10:22:52,True,Electrical Engineering,ERB-35
+DMP-66,pebble zenith whisper compass river island quartz falcon velvet tundra,2024-01-24 19:29:23,True,Mathematics and Computer Science,
+DMP-67,marble kernel anchor whisper whisper lotus summit island anchor cinder copper,2024-03-04 08:47:23,True,Industrial Engineering and Innovation Sciences,ERB-89
+DMP-68,summit harbor garden nectar compass harvest willow ripple oasis whisper garden opal copper,2024-06-07 18:43:23,True,Chemical Engineering and Chemistry,ERB-72
+DMP-69,cinder glacier orbit monsoon jasmine orbit oasis garden quartz vertex timber,2024-11-04 09:56:35,False,Applied Physics and Science Education,ERB-83
+DMP-70,river koala horizon quartz quartz zenith harbor harvest lantern whisper echo tundra grove,2024-10-08 01:25:23,True,Built Environment,ERB-49
+DMP-71,jasmine falcon signal island breeze garden dune meadow tundra oasis thunder,2025-08-25 21:56:34,True,Biomedical Engineering,
+DMP-72,harvest canvas pebble velvet cinder meadow mosaic tundra lagoon quartz ripple,2025-06-13 01:14:53,False,Other,ERB-22
+DMP-73,umbra tundra horizon tundra velvet meadow jasmine glacier ember copper nectar whisper kernel copper grove,2024-02-29 14:22:10,False,Built Environment,
+DMP-74,ripple marble ripple mosaic breeze copper koala quartz pebble summit nectar mosaic kernel fjord,2025-10-12 09:50:31,True,Built Environment,
+DMP-75,umbra copper zenith opal oasis summit timber koala falcon dune willow copper tundra compass,2024-09-13 01:52:52,True,Industrial Engineering and Innovation Sciences,
+DMP-76,canvas horizon nimbus summit velvet signal vertex koala whisper vertex vertex orbit,2025-07-04 13:37:25,False,Electrical Engineering,ERB-59
+DMP-77,marble echo fjord vertex grove breeze willow oasis umbra jasmine timber timber pebble garden,2025-08-18 02:11:12,True,Chemical Engineering and Chemistry,
+DMP-78,anchor glacier dune nectar prism breeze oasis vertex island tundra summit,2024-04-29 19:28:47,True,Other,ERB-10
+DMP-79,amber copper timber amber nimbus summit cinder dune mirror mirror nimbus,2025-09-01 05:43:15,True,Chemical Engineering and Chemistry,
+DMP-80,willow quartz jasmine dune dune nectar harbor anchor thunder summit island copper,2025-01-08 06:51:32,False,Mathematics and Computer Science,ERB-5
+DMP-81,zenith nectar orbit signal anchor kernel nectar grove signal koala,2025-09-26 08:27:07,True,Industrial Design,
+DMP-82,harbor falcon marble falcon signal garden whisper harvest amber compass,2024-04-23 10:33:23,True,Electrical Engineering,ERB-25
+DMP-83,zenith velvet zenith kernel river signal canvas grove prism amber oasis harvest ember,2024-08-21 21:51:54,True,Chemical Engineering and Chemistry,ERB-52
+DMP-84,umbra tundra meadow grove monsoon oasis tundra quartz amber glacier river timber quartz,2024-05-25 11:47:03,False,Built Environment,
+DMP-85,nimbus meadow oasis nectar opal prism falcon lagoon umbra opal canvas river echo compass,2025-07-23 07:00:39,False,Built Environment,ERB-78
+DMP-86,breeze compass copper prism fjord pebble dune lagoon zenith tundra fjord meadow dune kernel,2024-08-15 22:09:57,True,Chemical Engineering and Chemistry,
+DMP-87,whisper whisper falcon fjord lagoon lantern umbra ember horizon copper,2025-05-24 07:43:07,True,Built Environment,ERB-13
+DMP-88,jasmine falcon jasmine mosaic compass pebble willow marble echo canvas signal jasmine,2024-11-30 11:05:56,False,Biomedical Engineering,
+DMP-89,glacier harvest compass glacier kernel amber anchor kernel kernel amber koala summit jasmine umbra,2025-09-06 18:12:57,False,Built Environment,ERB-48
+DMP-90,umbra timber echo willow mosaic velvet summit dune lantern meadow dune marble marble quartz summit,2025-06-11 10:38:03,True,Industrial Design,ERB-32
+DMP-91,kernel meadow velvet marble whisper ember mosaic lantern pebble nectar koala orbit,2025-08-24 22:23:06,True,Mechanical Engineering,ERB-8
+DMP-92,opal ember koala monsoon orbit horizon kernel juniper kernel signal willow,2025-10-18 17:39:28,False,Industrial Design,
+DMP-93,meadow prism juniper horizon amber lotus umbra echo nectar orbit thunder velvet echo lantern prism,2024-10-13 13:00:09,True,Mathematics and Computer Science,
+DMP-94,summit signal whisper opal amber oasis cinder fjord meadow nimbus umbra,2024-12-15 12:07:57,True,Mathematics and Computer Science,ERB-60
+DMP-95,orbit grove prism ripple cinder orbit nectar island grove nectar glacier anchor,2025-07-04 22:54:33,True,Mathematics and Computer Science,ERB-6
+DMP-96,grove canvas umbra prism orbit glacier oasis nectar anchor lotus anchor vertex,2025-07-13 17:34:06,False,Industrial Design,ERB-81
+DMP-97,copper horizon signal mosaic dune canvas thunder quartz tundra lantern juniper prism umbra glacier,2024-07-09 04:51:18,False,Industrial Engineering and Innovation Sciences,
+DMP-98,kernel willow anchor harbor lagoon compass velvet horizon whisper opal compass falcon,2025-08-13 19:49:23,True,Mathematics and Computer Science,ERB-21
+DMP-99,whisper lagoon canvas mirror harvest glacier marble summit mirror horizon,2024-05-04 01:01:02,False,Other,
+DMP-100,whisper cinder monsoon nectar monsoon whisper lantern mosaic nectar nimbus garden timber copper monsoon island,2025-05-23 04:17:27,False,Electrical Engineering,ERB-68
